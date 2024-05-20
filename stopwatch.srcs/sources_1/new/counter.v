@@ -37,8 +37,8 @@ module counter(
     
     always @ (posedge clk) begin
         if (rst) begin
-            s = 0;
-            m = 0;
+            s <= 0;
+            m <= 0;
         end
         else begin
             if (s == 'd59) begin
