@@ -32,24 +32,30 @@ module clock(
     reg [27:0] clk_dvd;
     
     initial begin
-        clk_dvd = 28'b0;
-        clk_1hz = 0;
-        clk_2hz = 0;
-        clk_10hz = 0;
-        clk_100hz = 0;  
+        clk_dvd <= 28'b0;
+        clk_1hz <= 0;
+        clk_2hz <= 0;
+        clk_10hz <= 0;
+        clk_100hz <= 0;  
     end
     
-    always @ (posedge rst) begin
-        clk_dvd = 28'b0;
-        clk_1hz = 0;
-        clk_2hz = 0;
-        clk_10hz = 0;
-        clk_100hz = 0;
-    end
+
     
     always @ (posedge clk) begin
+    
+        if (rst) begin
+            clk_dvd <= 28'b0;
+            clk_1hz <= 0;
+            clk_2hz <= 0;
+            clk_10hz <= 0;
+            clk_100hz <= 0;
+        end 
+        
+        
+        else begin
+
         if (clk_dvd == 'd100_000_000) clk_dvd <= 28'b0;
-        else clk_dvd <= clk_dvd + 1'b1;
+        else begin clk_dvd <= clk_dvd + 1'b1;
         
         if (clk_dvd % 'd500_000 == 0) begin
             clk_100hz <= ~clk_100hz;
@@ -62,6 +68,9 @@ module clock(
                     end
                 end
             end
+        end
+        end
+        
         end
     end
     

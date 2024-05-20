@@ -23,8 +23,8 @@
 module counter(
     input clk,
     input rst,
-    output seconds,
-    output minutes
+    output [7:0] seconds,
+    output [7:0] minutes
     );
     
     reg [5:0] s;
@@ -35,16 +35,17 @@ module counter(
         m = 0;
     end
     
-    always @ (posedge rst) begin
-        s = 0;
-        m = 0;
-    end
-    
     always @ (posedge clk) begin
-        s <= s + 1;
-        if (s % 59 == 0) begin
-            s <= 0;
-            m <= m + 1;
+        if (rst) begin
+            s = 0;
+            m = 0;
+        end
+        else begin
+            if (s == 'd59) begin
+                s <= 0;
+                m <= m + 1;
+            end 
+            else s <= s + 1;
         end
     end
     
